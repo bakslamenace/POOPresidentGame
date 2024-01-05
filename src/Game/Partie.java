@@ -8,14 +8,12 @@ public class Partie {
     private List<Carte> cartesSurLePaquet;
     private Deck deck;
     private Joueur dernierJoueur; // Le dernier joueur à avoir joué
-    private boolean tourTermine; // Indicateur pour savoir si le tour est terminé
 
     public Partie(List<Joueur> joueurs, Deck deck) {
         this.joueurs = joueurs;
         this.cartesSurLePaquet = new ArrayList<>();
         this.deck = deck;
         this.dernierJoueur = null; // Initialiser le dernier joueur à null
-        this.tourTermine = false; // Initialiser l'état du tour
     }
 
     public void distribuerCartes() {
@@ -32,29 +30,32 @@ public class Partie {
     }
 
     public void executerPartie() {
+        int indexJoueurActuel = 0;
+        boolean tourTermine = false;
+
         while (!verifierFinPartie()) {
-            for (Joueur joueur : joueurs) {
-                if (dernierJoueur == null || joueur == dernierJoueur) {
-                    if (joueur.peutJouer()) {
-                        joueur.jouer(cartesSurLePaquet);
-                        if (finDuTour(cartesSurLePaquet)) {
-                            tourTermine = true;
-                            dernierJoueur = joueur;
-                            break;
-                        }
+            Joueur joueurActuel = joueurs.get(indexJoueurActuel % joueurs.size());
+
+            if (dernierJoueur == null || joueurActuel == dernierJoueur) {
+                boolean aJoue = joueurActuel.deciderJouerOuPasser(cartesSurLePaquet);
+
+                if (aJoue) {
+                    if (finDuTour(cartesSurLePaquet)) {
+                        tourTermine = true;
+                        dernierJoueur = joueurActuel;
                     }
+                } else {
+                    joueurActuel.passerTour();
                 }
+
                 if (tourTermine) {
-                    break;
+                    tourTermine = false;
+                    cartesSurLePaquet.clear();
+                    dernierJoueur = null; // Réinitialiser le dernier joueur
                 }
             }
-            if (!tourTermine) {
-                // Tous les joueurs ont passé leur tour
-                tourTermine = true;
-            }
-            // Préparer pour le prochain tour
-            tourTermine = false;
-            cartesSurLePaquet.clear();
+
+            indexJoueurActuel++;
         }
     }
 

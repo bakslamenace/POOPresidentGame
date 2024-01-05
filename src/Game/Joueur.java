@@ -65,5 +65,27 @@ public class Joueur {
         return nom;
     }
 
-    // Additional methods can be added as necessary.
+    // Méthode pour permettre au joueur de décider de jouer ou de passer son tour
+    public boolean deciderJouerOuPasser(List<Carte> cartesSurLePaquet) {
+        // Logique pour demander au joueur s'il veut jouer ou passer son tour.
+        // Retourne true s'il décide de jouer, false s'il passe son tour.
+
+        // Exemple d'interaction (à adapter pour une interface utilisateur réelle) :
+        System.out.println(nom + ", voulez-vous jouer une carte ? (y/n)");
+        String reponse = scanner.nextLine();
+        if (reponse.equalsIgnoreCase("y")) {
+            jouer(cartesSurLePaquet); // Méthode jouer à modifier pour permettre cette interaction
+            return true;
+        } else if (reponse.equalsIgnoreCase("n")) {
+            return false;
+        }else {
+            System.out.println("Réponse invalide. Veuillez répondre par y ou n.");
+            return deciderJouerOuPasser(cartesSurLePaquet);
+        }
+    }
+
+    public void passerTour() {
+        // Logique pour passer le tour
+        System.out.println(nom + " passe son tour.");
+    }
 }
