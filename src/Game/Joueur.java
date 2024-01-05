@@ -34,6 +34,7 @@ public class Joueur {
             System.out.println("Choix invalide. Veuillez choisir un nombre valide de cartes à jouer:");
             nombreDeCartesAJouer = scanner.nextInt();
         }
+        List<Carte> cartesSelectionnees = new ArrayList<>();
         cartesSurLePaquet.clear(); // Vide le paquet.
         for (int i = 0; i < nombreDeCartesAJouer; i++) {
             System.out.println("Choisissez la carte " + (i + 1) + " à jouer (numéro de 1 à " + cartes.size() + "):");
@@ -44,11 +45,22 @@ public class Joueur {
                 System.out.println("Choix invalide. Veuillez choisir un numéro de carte valide:");
                 choix = scanner.nextInt();
             }
-
             Carte carteChoisie = cartes.get(choix - 1); // Obtient la carte choisie.
-            cartesSurLePaquet.add(carteChoisie); // Ajoute la carte choisie au paquet.
-            retirerCarte(carteChoisie); // Retire la carte de la main du joueur.
-
+            cartesSelectionnees.add(carteChoisie); // Ajoute la carte choisie à la liste temporaire.
+            // Vérifie si les cartes sélectionnées respectent les règles du jeu.
+            if (cartesSelectionnees.size() > 1) {
+                Carte premiereCarteSelectionnee = cartesSelectionnees.get(0);
+                for (Carte carte : cartesSelectionnees) {
+                    if (carte.compareTo(premiereCarteSelectionnee) != 0) {
+                        System.out.println("Toutes les cartes jouées doivent avoir la même valeur.");
+                        return;
+                    }
+                }
+            }
+            for (Carte carte : cartesSelectionnees) {
+                cartesSurLePaquet.add(carte); // Ajoute la carte au paquet.
+                retirerCarte(carte); // Retire la carte de la main du joueur.
+            }
             // Mettre à jour les options pour les cartes restantes.
             afficherCartes();
         }

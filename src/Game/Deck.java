@@ -37,6 +37,4 @@ public class Deck {
     public int getNombreDeCartes() {
         return this.cartes.size();
     }
-
-    // Additional methods can be added as necessary.
 }
