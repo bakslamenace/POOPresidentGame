@@ -34,24 +34,22 @@ public class Partie {
         boolean tourTermine = false;
 
         while (!verifierFinPartie()) {
+
             Joueur joueurActuel = joueurs.get(indexJoueurActuel % joueurs.size());
 
             if (dernierJoueur == null || joueurActuel == dernierJoueur) {
+                //Afficher les cartes sur le paquet
+                System.out.println("Cartes sur le paquet: " + cartesSurLePaquet);
                 boolean aJoue = joueurActuel.deciderJouerOuPasser(cartesSurLePaquet);
 
                 if (aJoue) {
                     if (finDuTour(cartesSurLePaquet)) {
-                        tourTermine = true;
+                        cartesSurLePaquet.clear();
                         dernierJoueur = joueurActuel;
+                        continue;
                     }
                 } else {
                     joueurActuel.passerTour();
-                }
-
-                if (tourTermine) {
-                    tourTermine = false;
-                    cartesSurLePaquet.clear();
-                    dernierJoueur = null; // Réinitialiser le dernier joueur
                 }
             }
 

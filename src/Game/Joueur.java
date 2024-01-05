@@ -34,7 +34,7 @@ public class Joueur {
             System.out.println("Choix invalide. Veuillez choisir un nombre valide de cartes à jouer:");
             nombreDeCartesAJouer = scanner.nextInt();
         }
-
+        cartesSurLePaquet.clear(); // Vide le paquet.
         for (int i = 0; i < nombreDeCartesAJouer; i++) {
             System.out.println("Choisissez la carte " + (i + 1) + " à jouer (numéro de 1 à " + cartes.size() + "):");
             int choix = scanner.nextInt();
@@ -97,6 +97,7 @@ public class Joueur {
             System.out.println("Réponse invalide. Veuillez répondre par y ou n.");
             return deciderJouerOuPasser(cartesSurLePaquet);
         }
+
     }
 
     public void passerTour() {
