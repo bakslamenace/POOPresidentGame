@@ -12,7 +12,7 @@ public class Joueur {
 
     // Constructor to create a new player.
     public Joueur() {
-        this.nom = "Joueur"; // Default name, can be modified to allow custom names.
+        this.nom = "Joueur";
         this.cartes = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }

@@ -1,26 +1,25 @@
 package Game;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-// This class represents a game session.
 public class Partie {
-    private List<Joueur> joueurs; // List of players in the game.
-    private List<Carte> cartesSurLePaquet; // Cards currently on top of the pile.
-    private Deck deck; // The deck of cards for the game.
+    private List<Joueur> joueurs;
+    private List<Carte> cartesSurLePaquet;
+    private Deck deck;
+    private Joueur dernierJoueur; // Le dernier joueur à avoir joué
+    private boolean tourTermine; // Indicateur pour savoir si le tour est terminé
 
-    // Constructor to create a new game with given players and a deck.
     public Partie(List<Joueur> joueurs, Deck deck) {
         this.joueurs = joueurs;
         this.cartesSurLePaquet = new ArrayList<>();
         this.deck = deck;
+        this.dernierJoueur = null; // Initialiser le dernier joueur à null
+        this.tourTermine = false; // Initialiser l'état du tour
     }
 
-    // Distributes cards among players.
     public void distribuerCartes() {
-        Collections.shuffle(deck.getCartes()); // Shuffle the deck.
-        int nombreDeJoueurs = joueurs.size();
+        deck.shuffle();
         int indexCarte = 0;
         while (indexCarte < deck.getNombreDeCartes()) {
             for (Joueur joueur : joueurs) {
@@ -32,21 +31,42 @@ public class Partie {
         }
     }
 
-    // Executes the game, allowing each player to take turns.
     public void executerPartie() {
-        boolean partieTerminee = false;
-        while (!partieTerminee) {
+        while (!verifierFinPartie()) {
             for (Joueur joueur : joueurs) {
-                joueur.jouer(cartesSurLePaquet);
-                if (verifierFinPartie()) {
-                    partieTerminee = true;
+                if (dernierJoueur == null || joueur == dernierJoueur) {
+                    if (joueur.peutJouer()) {
+                        joueur.jouer(cartesSurLePaquet);
+                        if (finDuTour(cartesSurLePaquet)) {
+                            tourTermine = true;
+                            dernierJoueur = joueur;
+                            break;
+                        }
+                    }
+                }
+                if (tourTermine) {
                     break;
                 }
             }
+            if (!tourTermine) {
+                // Tous les joueurs ont passé leur tour
+                tourTermine = true;
+            }
+            // Préparer pour le prochain tour
+            tourTermine = false;
+            cartesSurLePaquet.clear();
         }
     }
 
-    // Checks if the game is finished and determines the winner/loser.
+    private boolean finDuTour(List<Carte> cartesJouees) {
+        for (Carte carte : cartesJouees) {
+            if (carte.getValeur().equals("2")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean verifierFinPartie() {
         for (Joueur joueur : joueurs) {
             if (joueur.getCartes().isEmpty()) {
@@ -57,10 +77,7 @@ public class Partie {
         return false;
     }
 
-    // Announces the winner of the game.
     private void annoncerGagnant(Joueur gagnant) {
         System.out.println("Le gagnant est " + gagnant.getNom());
     }
-
-    // Additional methods can be added as necessary.
 }
