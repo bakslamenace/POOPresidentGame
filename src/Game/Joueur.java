@@ -11,8 +11,8 @@ public class Joueur {
     private Scanner scanner; // Scanner to read user input.
 
     // Constructor to create a new player.
-    public Joueur() {
-        this.nom = "Joueur";
+    public Joueur(String nom) {
+        this.nom = nom;
         this.cartes = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }

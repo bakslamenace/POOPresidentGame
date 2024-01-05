@@ -60,13 +60,18 @@ public class Partie {
     }
 
     private boolean finDuTour(List<Carte> cartesJouees) {
-        for (Carte carte : cartesJouees) {
-            if (carte.getValeur().equals("2")) {
+        if (!cartesJouees.isEmpty()) {
+            Carte derniereCarte = cartesJouees.get(cartesJouees.size() - 1);
+            Carte carteReference = new Carte("2", "Pique"); // Carte de référence pour "2"
+
+            // Utilisez compareTo pour comparer la dernière carte jouée à la carte de référence
+            if (derniereCarte.compareTo(carteReference) == 0) {
                 return true;
             }
         }
         return false;
     }
+
 
     public boolean verifierFinPartie() {
         for (Joueur joueur : joueurs) {
