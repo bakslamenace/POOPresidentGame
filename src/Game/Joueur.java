@@ -24,23 +24,38 @@ public class Joueur {
 
     // Allows the player to play a card.
     public void jouer(List<Carte> cartesSurLePaquet) {
-        afficherCartes(); // Display the player's cards.
+        afficherCartes(); // Affiche les cartes du joueur.
 
-        System.out.println("Choisissez une carte à jouer (numéro de 1 à " + cartes.size() + "):");
-        int choix = scanner.nextInt();
+        System.out.println("Combien de cartes voulez-vous jouer ? (1 à 4)");
+        int nombreDeCartesAJouer = scanner.nextInt();
 
-        // Validate the player's choice.
-        while (choix < 1 || choix > cartes.size()) {
-            System.out.println("Choix invalide. Veuillez choisir un numéro de carte valide:");
-            choix = scanner.nextInt();
+        // Validation du nombre de cartes à jouer.
+        while (nombreDeCartesAJouer < 1 || nombreDeCartesAJouer > 4 || nombreDeCartesAJouer > cartes.size()) {
+            System.out.println("Choix invalide. Veuillez choisir un nombre valide de cartes à jouer:");
+            nombreDeCartesAJouer = scanner.nextInt();
         }
 
-        Carte carteChoisie = cartes.get(choix - 1); // Get the chosen card.
-        cartesSurLePaquet.add(carteChoisie); // Add the chosen card to the pile.
-        retirerCarte(carteChoisie); // Remove the card from the player's hand.
+        for (int i = 0; i < nombreDeCartesAJouer; i++) {
+            System.out.println("Choisissez la carte " + (i + 1) + " à jouer (numéro de 1 à " + cartes.size() + "):");
+            int choix = scanner.nextInt();
 
-        // Rules can be added here to check if the card can be played.
+            // Validation du choix de la carte.
+            while (choix < 1 || choix > cartes.size()) {
+                System.out.println("Choix invalide. Veuillez choisir un numéro de carte valide:");
+                choix = scanner.nextInt();
+            }
+
+            Carte carteChoisie = cartes.get(choix - 1); // Obtient la carte choisie.
+            cartesSurLePaquet.add(carteChoisie); // Ajoute la carte choisie au paquet.
+            retirerCarte(carteChoisie); // Retire la carte de la main du joueur.
+
+            // Mettre à jour les options pour les cartes restantes.
+            afficherCartes();
+        }
+
+        // Règles supplémentaires peuvent être ajoutées ici pour vérifier si les cartes peuvent être jouées.
     }
+
 
     // Removes a card from the player's hand.
     public void retirerCarte(Carte carte) {
