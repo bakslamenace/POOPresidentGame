@@ -29,34 +29,58 @@ public class Partie {
         }
     }
 
+    private boolean isCardPlayable(Carte carteJouee, List<Carte> cartesSurLePaquet) {
+        if (cartesSurLePaquet.isEmpty()) {
+            return true; // Si le paquet est vide, toutes les cartes sont jouables.
+        }
+        Carte derniereCarte = cartesSurLePaquet.get(cartesSurLePaquet.size() - 1);
+        return carteJouee.getValeurHierarchie() >= derniereCarte.getValeurHierarchie();
+    }
+
     public void executerPartie() {
         int indexJoueurActuel = 0;
-        boolean tourTermine = false;
+        boolean aJoueDeux = false;
 
         while (!verifierFinPartie()) {
-
             Joueur joueurActuel = joueurs.get(indexJoueurActuel % joueurs.size());
+            System.out.println("C'est au tour de " + joueurActuel.getNom() + " de jouer.");
 
-            if (dernierJoueur == null || joueurActuel == dernierJoueur) {
-                //Afficher les cartes sur le paquet
-                System.out.println("Cartes sur le paquet: " + cartesSurLePaquet);
+            // Affichage des cartes sur le paquet
+            System.out.println("Cartes sur le paquet: " + cartesSurLePaquet);
+
+            if (!aJoueDeux || joueurActuel == dernierJoueur) {
                 boolean aJoue = joueurActuel.deciderJouerOuPasser(cartesSurLePaquet);
 
                 if (aJoue) {
-                    if (finDuTour(cartesSurLePaquet)) {
-                        cartesSurLePaquet.clear();
-                        dernierJoueur = joueurActuel;
-                        continue;
+                    // Vérifie si la carte est jouable en utilisant isCardPlayable
+                    if (isCardPlayable(joueurActuel.getCartes().get(0), cartesSurLePaquet)) {
+                        if (estCarteDeux(cartesSurLePaquet)) {
+                            aJoueDeux = true;
+                            dernierJoueur = joueurActuel;
+                        } else {
+                            aJoueDeux = false;
+                            indexJoueurActuel++;
+                        }
+                    } else {
+                        System.out.println("La carte jouée n'est pas valide. Veuillez rejouer.");
                     }
                 } else {
                     joueurActuel.passerTour();
+                    aJoueDeux = false;
+                    cartesSurLePaquet.clear();
+                    indexJoueurActuel++;
                 }
             }
-
-            indexJoueurActuel++;
         }
     }
 
+    private boolean estCarteDeux(List<Carte> cartesJouees) {
+        if (!cartesJouees.isEmpty()) {
+            Carte derniereCarte = cartesJouees.get(cartesJouees.size() - 1);
+            return derniereCarte.getValeur().equals("2");
+        }
+        return false;
+    }
     private boolean finDuTour(List<Carte> cartesJouees) {
         if (!cartesJouees.isEmpty()) {
             Carte derniereCarte = cartesJouees.get(cartesJouees.size() - 1);

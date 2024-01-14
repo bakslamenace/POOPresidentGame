@@ -30,12 +30,12 @@ public class Carte implements Comparable<Carte> {
     // Compare cette carte à une autre carte.
     @Override
     public int compareTo(Carte autreCarte) {
-        return getValeurHierarchie(this.valeur) - getValeurHierarchie(autreCarte.valeur);
+        return this.getValeurHierarchie() - autreCarte.getValeurHierarchie();
     }
 
     // Renvoie un entier représentant la hiérarchie de la valeur de la carte.
-    private int getValeurHierarchie(String valeur) {
-        switch (valeur) {
+    public int getValeurHierarchie() {
+        switch (this.valeur) {
             case "3": return 1;
             case "4": return 2;
             case "5": return 3;
