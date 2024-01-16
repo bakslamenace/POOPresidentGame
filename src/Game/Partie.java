@@ -30,11 +30,15 @@ public class Partie {
     }
 
     private boolean isCardPlayable(Carte carteJouee, List<Carte> cartesSurLePaquet) {
+        System.out.println("Comparing cards");
         if (cartesSurLePaquet.isEmpty()) {
             return true; // Si le paquet est vide, toutes les cartes sont jouables.
         }
         Carte derniereCarte = cartesSurLePaquet.get(cartesSurLePaquet.size() - 1);
-        return carteJouee.getValeurHierarchie() >= derniereCarte.getValeurHierarchie();
+        System.out.println("Carte sur le paquet " + derniereCarte);
+        System.out.println("Carte jouée " + carteJouee);
+        System.out.println("Comparaison : " + carteJouee.compareTo(derniereCarte));
+        return carteJouee.compareTo(derniereCarte) > 0;
     }
 
     public void executerPartie() {
@@ -53,16 +57,12 @@ public class Partie {
 
                 if (aJoue) {
                     // Vérifie si la carte est jouable en utilisant isCardPlayable
-                    if (isCardPlayable(joueurActuel.getCartes().get(0), cartesSurLePaquet)) {
-                        if (estCarteDeux(cartesSurLePaquet)) {
-                            aJoueDeux = true;
-                            dernierJoueur = joueurActuel;
-                        } else {
-                            aJoueDeux = false;
-                            indexJoueurActuel++;
-                        }
+                    if (estCarteDeux(cartesSurLePaquet)) {
+                        aJoueDeux = true;
+                        dernierJoueur = joueurActuel;
                     } else {
-                        System.out.println("La carte jouée n'est pas valide. Veuillez rejouer.");
+                        aJoueDeux = false;
+                        indexJoueurActuel++;
                     }
                 } else {
                     joueurActuel.passerTour();

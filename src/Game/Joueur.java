@@ -47,6 +47,14 @@ public class Joueur {
         System.out.println(nom + " passe son tour.");
     }
 
+    public boolean isChoixValide(int choix, List<Carte> cartesSurLePaquet) {
+        if (cartesSurLePaquet.isEmpty()) {
+            return true;
+        }
+
+        return choix >= 0 && choix <= cartes.size() && cartes.get(choix - 1).compareTo(cartesSurLePaquet.get(cartesSurLePaquet.size() - 1)) >= 0;
+    }
+
     // Allows the player to play a card.
     public void jouer(List<Carte> cartesSurLePaquet) {
         afficherCartes(); // Affiche les cartes du joueur.
@@ -60,17 +68,20 @@ public class Joueur {
             nombreDeCartesAJouer = scanner.nextInt();
         }
         List<Carte> cartesSelectionnees = new ArrayList<>();
-        cartesSurLePaquet.clear(); // Vide le paquet.
+
         for (int i = 0; i < nombreDeCartesAJouer; i++) {
             System.out.println("Choisissez la carte " + (i + 1) + " à jouer (numéro de 1 à " + cartes.size() + "):");
             int choix = scanner.nextInt();
 
             // Validation du choix de la carte.
-            while (choix < 1 || choix > cartes.size()) {
+            while (!isChoixValide(choix, cartesSurLePaquet)) {
                 System.out.println("Choix invalide. Veuillez choisir un numéro de carte valide:");
                 choix = scanner.nextInt();
             }
+
+
             Carte carteChoisie = cartes.get(choix - 1); // Obtient la carte choisie.
+
             cartesSelectionnees.add(carteChoisie); // Ajoute la carte choisie à la liste temporaire.
             // Vérifie si les cartes sélectionnées respectent les règles du jeu.
             if (cartesSelectionnees.size() > 1) {
@@ -82,14 +93,15 @@ public class Joueur {
                     }
                 }
             }
-            for (Carte carte : cartesSelectionnees) {
-                cartesSurLePaquet.add(carte); // Ajoute la carte au paquet.
-                retirerCarte(carte); // Retire la carte de la main du joueur.
-            }
             // Mettre à jour les options pour les cartes restantes.
             afficherCartes();
         }
 
+        cartesSurLePaquet.clear(); // Vide le paquet.
+        for (Carte carte : cartesSelectionnees) {
+            cartesSurLePaquet.add(carte); // Ajoute la carte au paquet.
+            retirerCarte(carte); // Retire la carte de la main du joueur.
+        }
         // Règles supplémentaires peuvent être ajoutées ici pour vérifier si les cartes peuvent être jouées.
     }
 
