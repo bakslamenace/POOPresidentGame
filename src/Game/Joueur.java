@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// This class represents a player in the game.
+// La classe représente le joueur dans la partie
 public class Joueur {
-    private String nom; // Name of the player.
-    private List<Carte> cartes; // The player's hand of cards.
-    private Scanner scanner; // Scanner to read user input.
+    private String nom;
+    private List<Carte> cartes;
+    private Scanner scanner;
 
-    // Constructor to create a new player.
+    //Constructeur pour créer et initialiser un nouveau joueur
     public Joueur(String nom) {
         this.nom = nom;
         this.cartes = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }
 
-    // Adds a card to the player's hand.
+    // Ajouter une carte à la main du joueur
     public void recevoirCarte(Carte carte) {
         cartes.add(carte);
     }

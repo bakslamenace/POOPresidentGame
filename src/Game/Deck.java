@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// This class represents a deck of playing cards.
+// La classe représente le deck de cartes utilisé dans le jeu.
 public class Deck {
-    private List<Carte> cartes; // A list to store the cards in the deck.
+    private List<Carte> cartes; // Une liste pour stocker les cartes dans le jeu.
 
-    // Constructor to create and initialize a new deck of cards.
+    // Constructeur pour créer et initialiser un nouveau jeu de cartes.
     public Deck() {
         this.cartes = new ArrayList<>();
-        initialiserDeck(); // Initialize the deck with cards.
+        initialiserDeck(); // Initialise le deck avec les cartes.
     }
 
-    // Initializes the deck with a standard set of playing cards.
+    // Constructeur pour créer et initialiser un nouveau jeu de cartes
     private void initialiserDeck() {
         for (String couleur : new String[]{"Cœur", "Carreau", "Trèfle", "Pique"}) {
             for (String valeur : new String[]{"2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Dame", "Roi", "As"}) {
@@ -23,17 +23,17 @@ public class Deck {
         }
     }
 
-    // Shuffles the cards in the deck.
+    //Mélange les cartes dans le deck.
     public void shuffle() {
         Collections.shuffle(this.cartes);
     }
 
-    // Returns the list of cards in the deck.
+    // Renvoie la liste de carte
     public List<Carte> getCartes() {
         return this.cartes;
     }
 
-    // Returns the number of cards in the deck.
+    // Renvoie le nombre de cartes dans le jeu.
     public int getNombreDeCartes() {
         return this.cartes.size();
     }
